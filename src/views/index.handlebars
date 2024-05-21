@@ -1,0 +1,37 @@
+<h1>INICIO</h1>
+<section class="view">
+    <article class="products" id="products"></article>
+</section>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+    const socket = io();
+    socket.on("products", data => {
+        console.log(data)
+        let template = ``
+        template = data.map(each => `
+            <div class="Container container-fluid ">
+                <figure class="figure">
+                    <a href="./details.handlebars?id=${each.id}">
+                        <img style="width: 253px; height: 351px" class="img-fluid rounded" src="${each.photo}" alt="${each.id}" />
+                    </a>
+                    <figcaption class="editorial figure-caption">${each.publisher}</figcaption>
+                    <figcaption class="titulo figure-caption">${each.title}</figcaption>
+                    <figcaption class="precio figure-caption">${each.price}</figcaption>
+                    <button className="btn" type="button">Agregar al carrito</button>
+                </figure>
+            </div>`
+        ).join("")
+        document.querySelector("#products").innerHTML = template
+    })
+/*
+    document.querySelector("#create").addEventListener("click", (event) => {
+        const title = document.querySelector("#title").value
+        const publisher = document.querySelector("#publisher").value
+        const category = document.querySelector("#category").value
+        const price = document.querySelector("#price").value
+        const stock = document.querySelector("#stock").value
+        const photo = document.querySelector("#Productsphoto").value
+        socket.emit("create", {title, publisher, category, price, stock, photo})
+    })*/
+</script>

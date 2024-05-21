@@ -1,0 +1,37 @@
+<h1>Users form</h1>
+<section>
+    <article class="usersForm">
+        <h2>register form</h2>
+        <form>
+            <input type="email" name="email" id="email" placeholder="EMAIL">
+            <input type="password" name="password" id="password" placeholder="PASSWORD">
+            <input type="button" value="register" id="registerUser">
+            <input type="url" name="photo" id="photo" placeholder="PHOTO">
+        </form>
+    </article>
+    <article class="users" id="usersForm"></article>
+</section>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+<script>
+            const socket = io();
+    socket.on("usersForm", data => {
+        console.log(data)
+        let template = ``
+        template = data.map(each => `
+        <div class="userCard" style="width: 18rem;">
+            <img style="height: 10rem" src="${each.photo}" class="card-img-top" alt="${each.id}">
+            <div class="card-body">
+                <h5 class="card-title">${each.email}</h5>
+            </div>
+        </div>`
+        ).join("")
+        document.querySelector("#usersForm").innerHTML = template
+    })
+        document.querySelector("#registerUser").addEventListener("click", (event) => {
+        const email = document.querySelector("#email").value
+        const password = document.querySelector("#password").value
+        const photo = document.querySelector("#photo").value
+        socket.emit("registerUser", { email, password, photo })
+    })
+</script>
