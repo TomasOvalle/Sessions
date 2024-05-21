@@ -1,0 +1,45 @@
+<h1>Cart Products</h1>
+<section id="productsOnCart"></section>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+    const socket = io();
+    socket.on("cart", data => {
+        console.log(data)
+        let template ``
+        template = data.map(each => `
+            <div class="Container container-fluid ">
+                <figure class="figure">
+                    <figcaption class="editorial figure-caption">${data.product_id.publisher}</figcaption>
+                    <figcaption class="titulo figure-caption">${data.product_id.title}</figcaption>
+                    <figcaption class="precio figure-caption">${data.product_id.price}</figcaption>
+                    <button type="button" class="btn" onclick="delete('${data.product_id._id}')">Delete</button>
+                </figure>
+            </div>`
+        ).join("")
+        document.querySelector("#productsOnCart").innerHTML = template
+    })
+
+
+
+/*const template = (data) => `
+<div class="Container container-fluid ">
+    <figure class="figure">
+        <figcaption class="editorial figure-caption">${data.product_id.publisher}</figcaption>
+        <figcaption class="titulo figure-caption">${data.product_id.title}</figcaption>
+        <figcaption class="precio figure-caption">${data.product_id.price}</figcaption>
+        <button type="button" class="btn" onclick="delete('${data.product_id._id}')">Delete</button>
+    </figure>
+</div>`;
+
+
+fetch("/api/carts?user_id=66300e78465a634dfd0105e0")
+    .then(res => res.json())
+    .then(res => {
+        console.log(res);
+        const products = res.response.docs
+        console.log(products);
+        document.querySelector("#productsOnCart").innerHTML = products.map(each => template(each)).join("")
+    })
+    .catch(err => console.log(err))*/
+</script>
